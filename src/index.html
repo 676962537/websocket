@@ -16,7 +16,7 @@
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.common.dev.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io('http://localhost:3000/');
+        var socket = io(location.host);
 
         socket.on('connect', function(){
             console.log("连接成功")
