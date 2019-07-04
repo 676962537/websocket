@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="app">
+        <div v-for="(item,index) in dataList">{{item}}</div>
+        <div><input type="text" v-model="inputValue" @keyup.enter="send"></div>
+        <div @click="send">发送</div>
+    </div>
+<!--    <script>-->
+<!--        var wsObj = new WebSocket("ws://localhost:3000");   //建立连接-->
+<!--    </script>-->
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.common.dev.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io('http://localhost:3000/');
+
+        socket.on('connect', function(){
+            console.log("连接成功")
+        });
+        socket.on('event', function(data){
+            console.log("server发送消息:",data);
+        });
+        socket.on('disconnect', function(){});
+        new Vue({
+            el:".app",
+            data(){
+                return {
+                    inputValue:"",
+                    dataList:[]
+                }
+            },
+            mounted(){
+                this.initSocketListener();
+            },
+            methods:{
+                initSocketListener(){
+                    var _this = this;
+                    socket.on('event', function(data){
+                        _this.dataList.push(data);
+                    });
+                },
+                send(){
+                    socket.emit("event", this.inputValue);
+                    this.inputValue = "";
+                }
+            }
+        })
+    </script>
+</body>
+</html>
