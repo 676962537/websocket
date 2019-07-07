@@ -1,0 +1,12 @@
+*{
+    font-size: 0.12rem;
+    margin: 0;
+    padding: 0;
+}
+input{
+    border: 0;
+}
+body{
+    max-width: 640px;
+    margin: 0 auto;
+}
